@@ -1,36 +1,36 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import {
-  IRepository,
   ISearchRepositoriesData,
   ISearchRepositoriesVars,
   SEARCH_REPOSITORIES
 } from '../queries/searchRepositories';
+import { Loading } from './Loading';
+import { ErrorMessage } from './ErrorMessage';
+import { RepositoriesListItem } from './RepositoriesListItem';
+import { Pagination } from './Pagination';
 
 interface IRepositoriesListProps {
   searchQuery: string;
 }
 
 export function RepositoriesList({ searchQuery }: IRepositoriesListProps): React.ReactElement | null {
-  const { loading, error, data } = useQuery<ISearchRepositoriesData, ISearchRepositoriesVars>(SEARCH_REPOSITORIES, {
+  const { loading, error, data, fetchMore, variables } = useQuery<ISearchRepositoriesData, ISearchRepositoriesVars>(SEARCH_REPOSITORIES, {
     variables: {
       query: searchQuery,
-      first: 10
+      first: 15
     }
   });
 
   if (loading) {
     return (
-      <p>... Loading ...</p>
+      <Loading />
     )
   }
 
   if (error) {
     return (
-      <div>
-        <p>An error occurred while trying to fetch data:</p>
-        <p>{error.message}</p>
-      </div>
+      <ErrorMessage error={error} />
     );
   }
 
@@ -38,13 +38,14 @@ export function RepositoriesList({ searchQuery }: IRepositoriesListProps): React
     return null;
   }
 
+  const { edges, pageInfo } = data.search;
+
   return (
     <ul>
-      {data.search.nodes.map((repo: IRepository) => (
-          <p key={repo.id}>
-            <a href={repo.url} target="_blank" rel="noreferrer">{repo.nameWithOwner}</a> - 🌟 {repo.stargazerCount} - 🍴 {repo.forkCount}
-          </p>
+      {edges.map(({ node: repo }) => (
+          <RepositoriesListItem key={repo.id} repository={repo} />
         ))}
+      <Pagination pageInfo={pageInfo} fetchMore={fetchMore} variables={variables!} />
     </ul>
   );
 }
