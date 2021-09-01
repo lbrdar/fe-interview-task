@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   IPageInfo,
-  ISearchRepositoriesVars
+  ISearchRepositoriesVars,
 } from '../queries/searchRepositories';
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const StyledButton = styled.button`
   background-color: lightblue;
   cursor: pointer;
   border: none;
-  box-shadow: 2px 2px 10px 2px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.3);
 `;
 
 interface IPaginationProps {
@@ -25,17 +25,27 @@ interface IPaginationProps {
   variables: ISearchRepositoriesVars;
 }
 
-export function Pagination({ pageInfo, variables, fetchMore }: IPaginationProps): React.ReactElement {
+export function Pagination({
+  pageInfo,
+  variables,
+  fetchMore,
+}: IPaginationProps): React.ReactElement {
   return (
-      <StyledContainer>
-        {pageInfo.hasNextPage && (
-          <StyledButton onClick={() => fetchMore({
-            variables: {
-              ...variables,
-              after: pageInfo.endCursor
-            }
-          })}>Load more</StyledButton>
-        )}
-      </StyledContainer>
+    <StyledContainer>
+      {pageInfo.hasNextPage && (
+        <StyledButton
+          onClick={() =>
+            fetchMore({
+              variables: {
+                ...variables,
+                after: pageInfo.endCursor,
+              },
+            })
+          }
+        >
+          Load more
+        </StyledButton>
+      )}
+    </StyledContainer>
   );
 }

@@ -11,7 +11,7 @@ const StyledLink = styled.a`
   font-size: 1.25em;
   color: black;
   text-decoration: none;
-  
+
   &:hover {
     cursor: pointer;
     text-decoration: underline;
@@ -22,12 +22,16 @@ interface IRepositoriesListItemProps {
   repository: IRepository;
 }
 
-function RepositoriesListItemBase({ repository }: IRepositoriesListItemProps): React.ReactElement {
+function RepositoriesListItemBase({
+  repository,
+}: IRepositoriesListItemProps): React.ReactElement {
   const { url, nameWithOwner, stargazerCount, forkCount } = repository;
 
   return (
     <StyledListItem>
-      <StyledLink href={url} target="_blank" rel="noreferrer">{nameWithOwner} </StyledLink>
+      <StyledLink href={url} target="_blank" rel="noreferrer">
+        {nameWithOwner}{' '}
+      </StyledLink>
       - 🌟 {stargazerCount} - 🍴 {forkCount}
     </StyledListItem>
   );

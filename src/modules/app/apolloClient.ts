@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { relayStylePagination } from '@apollo/client/utilities';
 
 const httpLink = createHttpLink({
-  uri: 'https://api.github.com/graphql'
+  uri: 'https://api.github.com/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -12,8 +12,8 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: 'Bearer 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',
-    }
-  }
+    },
+  };
 });
 
 export const apolloClient = new ApolloClient({
@@ -22,9 +22,9 @@ export const apolloClient = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          search: relayStylePagination()
-        }
-      }
-    }
-  })
+          search: relayStylePagination(),
+        },
+      },
+    },
+  }),
 });
